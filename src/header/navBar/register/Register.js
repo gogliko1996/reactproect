@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { fetchUsers } from "../../../redux/Users";
+import "./register.css";
 
 export const RegisterUsers = () => {
   const navigation = useNavigate();
@@ -29,7 +30,7 @@ export const RegisterUsers = () => {
     if ((userValue.password.length > 0) & (userValue.password.length < 4)) {
       errorUser.password = "error";
     }
-    if ((userValue.email.length === 0) || userValue.email.match(email)) {
+    if (userValue.email.length === 0 || userValue.email.match(email)) {
     } else {
       errorUser.email = "error";
     }
@@ -39,8 +40,8 @@ export const RegisterUsers = () => {
   const prevOnsub = (event) => {
     event.preventDefault();
     dispatch(fetchUsers({ userValue, register: true }))
-    .unwrap()
-    .then(() => navigation("/login"));
+      .unwrap()
+      .then(() => navigation("/login"));
     const userValueClear = { ...userValue };
     userValueClear.firstName = "";
     userValueClear.lastName = "";
@@ -52,36 +53,35 @@ export const RegisterUsers = () => {
   return (
     <form onSubmit={prevOnsub}>
       <input
-        style={{ border: "#ff0000" }}
+        className={error.firstname === "error" ? "red" : "grin"}
         value={userValue.firstName}
         name="firstName"
         onChange={onChange}
-        placeholder="name"
+        placeholder=" name"
       />
-      <p>{error.firstname}</p>
       <input
+        className={error.lastname === "error" ? "red" : "grin"}
         value={userValue.lastName}
         name="lastName"
         onChange={onChange}
-        placeholder="lastname"
+        placeholder=" lastname"
       />
-      <p>{error.lastname}</p>
       <input
+        className={error.email === "error" ? "red" : "grin"}
         type="email"
         value={userValue.email}
         name="email"
         onChange={onChange}
-        placeholder="email"
+        placeholder=" email"
       />
-      <p>{error.email}</p>
       <input
+        className={error.password === "error" ? "red" : "grin"}
         type="password"
         value={userValue.password}
         name="password"
         onChange={onChange}
-        placeholder="password"
+        placeholder=" password"
       />
-      <p>{error.password}</p>
       <button> register </button>
     </form>
   );

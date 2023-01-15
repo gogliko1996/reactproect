@@ -27,7 +27,6 @@ export const LoginForm = () => {
     setLoginVlue(userValueClear)
   }
   return (
-    <>
       <form>
       <input
         type="email"
@@ -44,8 +43,7 @@ export const LoginForm = () => {
         placeholder="password"
       />
         <button variant="outlined" onClick={onclick} >Outlined</button>
+        <Link to="/registration"> registration </Link>
     </form>
-     <Link to="/registration"> registration </Link>
-    </>
   );
 };
