@@ -51,5 +51,5 @@ const userSlice = createSlice({
 export const userReducer = userSlice.reducer;
 export const {logoutUser} = userSlice.actions;
 
-export const useUserInfo = () => useSelector((state) => state?.user?.userData);
-export const useAdmin = () => useSelector((state) => state?.user?.userData?.role[0]);
+export const useUserInfo = () => useSelector((state) => state.user.userData);
+export const useAdmin = () => useSelector((state) => state.user.userData?.role[0]);

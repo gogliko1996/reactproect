@@ -6,8 +6,8 @@ import "./register.css";
 
 export const RegisterUsers = () => {
   const navigation = useNavigate();
-  const email =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const email = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+   
   const dispatch = useDispatch();
   const [error, setError] = useState({});
   const [userValue, setUserValue] = useState({
@@ -38,16 +38,34 @@ export const RegisterUsers = () => {
   };
 
   const prevOnsub = (event) => {
+    const errorUser = {};
     event.preventDefault();
-    dispatch(fetchUsers({ userValue, register: true }))
+    if (userValue.firstName === "") {
+      errorUser.firstname = "error";
+    };
+    if (userValue.lastName === "") {
+      errorUser.lastname = "error";
+    };
+    if (userValue.password === "") {
+      errorUser.password = "error";
+    };
+    if (userValue.email === "") {
+      errorUser.email = "error";
+    }
+    setError(errorUser);
+
+    if(Object.keys(errorUser).length === 0){
+        dispatch(fetchUsers({ userValue, register: true }))
       .unwrap()
       .then(() => navigation("/login"));
-    const userValueClear = { ...userValue };
-    userValueClear.firstName = "";
-    userValueClear.lastName = "";
-    userValueClear.password = "";
-    userValueClear.email = "";
-    setUserValue(userValueClear);
+
+      const userValueClear = { ...userValue };
+      userValueClear.firstName = "";
+      userValueClear.lastName = "";
+      userValueClear.password = "";
+      userValueClear.email = "";
+      setUserValue(userValueClear);
+    }
   };
 
   return (

@@ -1,33 +1,32 @@
-import { useState } from "react";
+import {  useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { fetchUsers } from "../../../redux/Users";
+import { fetchUsers, useUserInfo } from "../../../redux/Users";
 
 export const LoginForm = () => {
-    const dispatch = useDispatch();
-    const navigation = useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  // const userInfo = useUserInfo();
   const [userValue, setLoginVlue] = useState({
     email: "",
     password: "",
   });
-
   const onchange = (e) => {
-    const {name,value}=e.target;
-    setLoginVlue((newLogin) => ({...newLogin, [name]: value}))
+    const { name, value } = e.target;
+    setLoginVlue((newLogin) => ({ ...newLogin, [name]: value }));
   };
-  
   const onclick = (e) => {
     e.preventDefault();
-    dispatch(fetchUsers({userValue,register:false}))
+    dispatch(fetchUsers({ userValue, register: false }))
     .unwrap()
-    .then(() => navigation("/home"));
+    .then(() => navigate("/home"))
     const userValueClear = { ...userValue };
     userValueClear.password = "";
     userValueClear.email = "";
-    setLoginVlue(userValueClear)
-  }
+    setLoginVlue(userValueClear);
+  };
   return (
-      <form>
+    <form>
       <input
         type="email"
         value={userValue.email}
@@ -42,8 +41,10 @@ export const LoginForm = () => {
         onChange={onchange}
         placeholder="password"
       />
-        <button variant="outlined" onClick={onclick} >Outlined</button>
-        <Link to="/registration"> registration </Link>
+      <button variant="outlined" onClick={onclick}>
+        Outlined
+      </button>
+      <Link to="/registration"> registration </Link>
     </form>
   );
 };
