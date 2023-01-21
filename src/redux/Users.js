@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 import { useSelector } from "react-redux";
+import { instance } from "../aplicationtools/instance";
 
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async (user) => {
   try {
-    const identification = `users/${user.register ? "register" : "login"}`;
-    const { data } = await axios.post(
-      `http://localhost:3001/${identification}`,
+    const identification = `/users/${user.register ? "register" : "login"}`;
+    const { data } = await instance.post(
+      identification,
       user.userValue
     );
     localStorage.setItem("token", data.token);
@@ -52,4 +52,9 @@ export const userReducer = userSlice.reducer;
 export const {logoutUser} = userSlice.actions;
 
 export const useUserInfo = () => useSelector((state) => state.user.userData);
-export const useAdmin = () => useSelector((state) => state.user.userData?.role[0]);
+export const admin = (userData) => {
+  return userData?.role.includes("admin")
+
+}
+
+

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { fetchProduct } from "../redux/product";
+import FileBase from 'react-file-base64';
 
 export const Addproduct = () => {
   const dispatch = useDispatch();
@@ -10,41 +11,63 @@ export const Addproduct = () => {
     brand: "",
     description: "",
     price: "",
-    img: "",
+    Image: ""
   });
 
   const onchange = (e) => {
     const { name, value } = e.target;
     setProductValue((newValue) => ({ ...newValue, [name]: value }));
-    console.log(productValue);
   };
 
   const submit = (e) => {
     e.preventDefault();
-   dispatch(fetchProduct(productValue))
+    dispatch(fetchProduct(productValue));
+    const product = {...productValue};
+    product.name = ""
+    product.category = ""
+    product.brand = ""
+    product.description = ""
+    product.price = ""
+    product.Image = ""
+    setProductValue(product)
   };
 
   return (
     <form onSubmit={submit}>
-      <input name="name" value={productValue.name} onChange={onchange} />
+      <input
+        name="name"
+        value={productValue.name}
+        onChange={onchange}
+        placeholder="  name"
+      />
       <input
         name="category"
         value={productValue.category}
         onChange={onchange}
+        placeholder=" category "
       />
-      <input name="brand" value={productValue.brand} onChange={onchange} />
+      <input
+        name="brand"
+        value={productValue.brand}
+        onChange={onchange}
+        placeholder="  brand"
+      />
       <input
         name="description"
         value={productValue.description}
         onChange={onchange}
+        placeholder="  description  "
       />
-      <input name="price" value={productValue.price} onChange={onchange} />
       <input
-        type="file"
-        name="img"
-        value={productValue.img}
+        type = "number"
+        name="price"
+        value={productValue.price}
         onChange={onchange}
+        placeholder="  price "
       />
+    <FileBase type="file" mulfiple={false} onDone={({base64}) => {
+      productValue.Image = base64;
+    }} />
       <button> add product </button>
     </form>
   );

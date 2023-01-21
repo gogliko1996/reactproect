@@ -1,12 +1,12 @@
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { logoutUser, useAdmin, useUserInfo } from "../../redux/Users";
+import { admin, logoutUser, useAdmin, useUserInfo } from "../../redux/Users";
 import "./navbar.css";
 
 export const NavBar = () => {
   const userIfo = useUserInfo();
   const dispach = useDispatch();
-  const admin = useAdmin();
+  const adminPanel = admin(userIfo);
 
   const logout = () => {
     dispach(logoutUser())
@@ -23,7 +23,7 @@ export const NavBar = () => {
           </li>
 
           <div className="logout">
-            {admin === "admin" && <Link to="/addproduqt"> add product </Link>}
+            {adminPanel && <Link to="/addproduqt"> add product </Link>}
             <button onClick={logout}> logout </button>
           </div>
 
