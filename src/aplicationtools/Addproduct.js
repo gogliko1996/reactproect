@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { fetchProduct } from "../redux/product";
-import FileBase from 'react-file-base64';
+import FileBase from "react-file-base64";
 
 export const Addproduct = () => {
   const dispatch = useDispatch();
@@ -11,7 +11,7 @@ export const Addproduct = () => {
     brand: "",
     description: "",
     price: "",
-    Image: ""
+    Image: "",
   });
 
   const onchange = (e) => {
@@ -21,15 +21,15 @@ export const Addproduct = () => {
 
   const submit = (e) => {
     e.preventDefault();
-    dispatch(fetchProduct(productValue));
-    const product = {...productValue};
-    product.name = ""
-    product.category = ""
-    product.brand = ""
-    product.description = ""
-    product.price = ""
-    product.Image = ""
-    setProductValue(product)
+    dispatch(fetchProduct({productValue, update: false }));
+    const product = { ...productValue };
+    product.name = "";
+    product.category = "";
+    product.brand = "";
+    product.description = "";
+    product.price = "";
+    product.Image = "";
+    setProductValue(product);
   };
 
   return (
@@ -59,15 +59,22 @@ export const Addproduct = () => {
         placeholder="  description  "
       />
       <input
-        type = "number"
+        type="number"
         name="price"
         value={productValue.price}
         onChange={onchange}
         placeholder="  price "
       />
-    <FileBase type="file" mulfiple={false} onDone={({base64}) => {
-      productValue.Image = base64;
-    }} />
+      <FileBase
+        value={productValue.Image}
+        type="file"
+        mulfiple={false}
+        onDone={({ base64 }) => {
+          const img = { ...productValue };
+          img.Image = base64;
+          setProductValue(img);
+        }}
+      />
       <button> add product </button>
     </form>
   );
