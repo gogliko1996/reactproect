@@ -1,17 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Addproduct } from "../../aplicationtools/Addproduct";
-import { deleteProduct, fetchProduct, update } from "../../redux/product";
+import {
+  deleteProduct,
+  fetchProduct,
+  getProduct,
+  update,
+} from "../../redux/product";
 import { admin, useUserInfo } from "../../redux/Users";
 import FileBase from "react-file-base64";
+import "./home.css"
 
 export const Home = () => {
+  useEffect(() => {
+    getProduct();
+  }, []);
   const product = useSelector((state) => state.products.getProductData);
   const dispatch = useDispatch();
   const userIfo = useUserInfo();
   const adminPanel = admin(userIfo);
   const [update, setupdate] = useState(false);
-  const [productId, setProductId]= useState("");
+  const [productId, setProductId] = useState("");
   const [productValue, setProductValue] = useState({
     name: "",
     category: "",
@@ -20,26 +29,25 @@ export const Home = () => {
     price: "",
     Image: "",
   });
-
   const onchange = (e) => {
     const { name, value } = e.target;
     setProductValue((newValue) => ({ ...newValue, [name]: value }));
   };
-
+console.log(product);
   const onclickUpdate = (e) => {
     const id = e.target.name;
     for (const item of product) {
       if (id === item._id) {
-        setProductValue(item)
-        setProductId(item._id)
-        setupdate(true)
+        setProductValue(item);
+        setProductId(item._id);
+        setupdate(true);
       }
     }
   };
 
   const submit = (e) => {
     e.preventDefault();
-    dispatch(fetchProduct({productValue, update: true , id: productId}));
+    dispatch(fetchProduct({ productValue, update: true, id: productId }));
     const product = { ...productValue };
     product.name = "";
     product.category = "";
@@ -48,7 +56,7 @@ export const Home = () => {
     product.price = "";
     product.Image = "";
     setProductValue(product);
-    setupdate(false)
+    setupdate(false);
   };
 
   const onclickDelete = (e) => {
@@ -113,12 +121,17 @@ export const Home = () => {
           </div>
         )}
       </>
+      <div className="productBox">
       {product.map((item) => {
         return (
-          <div key={item._id}>
-            <h2>{item.name}</h2>
-            {adminPanel && (
-              <>
+          <div className="product" key={item._id}>
+            <div className="imge" name={item._id}  > </div>
+            <div  className="">
+              <h2>{item.name}</h2>
+            <h3>{item.price}  $</h3>
+            </div>
+            {adminPanel ? (
+              <div className="button">
                 <button name={item._id} onClick={onclickUpdate}>
                   {" "}
                   update{" "}
@@ -127,11 +140,14 @@ export const Home = () => {
                   {" "}
                   delete{" "}
                 </button>
-              </>
+              </div>
+            ) : (
+              <button> calata </button>
             )}
           </div>
         );
       })}
+      </div>
     </div>
   );
 };

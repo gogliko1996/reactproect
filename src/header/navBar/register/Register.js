@@ -58,7 +58,6 @@ export const RegisterUsers = () => {
         dispatch(fetchUsers({ userValue, register: true }))
       .unwrap()
       .then(() => navigation("/login"));
-
       const userValueClear = { ...userValue };
       userValueClear.firstName = "";
       userValueClear.lastName = "";

@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { fetchProduct } from "../redux/product";
 import FileBase from "react-file-base64";
+import { useNavigate } from "react-router-dom";
 
 export const Addproduct = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const [productValue, setProductValue] = useState({
     name: "",
@@ -21,7 +23,10 @@ export const Addproduct = () => {
 
   const submit = (e) => {
     e.preventDefault();
-    dispatch(fetchProduct({productValue, update: false }));
+    dispatch(fetchProduct({productValue, update: false }))
+    .unwrap()
+    .then(() => navigate("/home"))
+    
     const product = { ...productValue };
     product.name = "";
     product.category = "";
