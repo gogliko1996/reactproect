@@ -12,8 +12,10 @@ export const NavBar = () => {
   const logout = () => {
     dispach(logoutUser())
   }
+
   const name = userInfo?.firstName.charAt(0).toUpperCase();
   const lastname = userInfo?.lastName.charAt(0).toUpperCase();
+  
   return (
     <>
     <Serch/>

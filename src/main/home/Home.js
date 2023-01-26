@@ -12,9 +12,6 @@ import FileBase from "react-file-base64";
 import "./home.css"
 
 export const Home = () => {
-  useEffect(() => {
-    getProduct();
-  }, []);
   const product = useSelector((state) => state.products.getProductData);
   const dispatch = useDispatch();
   const userIfo = useUserInfo();
@@ -29,11 +26,16 @@ export const Home = () => {
     price: "",
     Image: "",
   });
+
+  useEffect(() => {
+    dispatch(getProduct())
+  }, []);
+
   const onchange = (e) => {
     const { name, value } = e.target;
     setProductValue((newValue) => ({ ...newValue, [name]: value }));
   };
-console.log(product);
+
   const onclickUpdate = (e) => {
     const id = e.target.name;
     for (const item of product) {

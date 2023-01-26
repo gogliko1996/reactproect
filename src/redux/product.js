@@ -5,12 +5,12 @@ import { instance } from "../aplicationtools/instance";
 export const fetchProduct = createAsyncThunk(
   "product/fetchProduct",
   async (productIfo, { dispatch }) => {
-    const {productValue ,update, id} = productIfo;
-    const prId = update ? id : ""
+    const { productValue, update, id } = productIfo;
+    const prId = update ? id : "";
     const method = update ? "put" : "post";
     const product = productValue;
     try {
-      const { data } = await instance[method](`/products/${prId}`,{product});
+      const { data } = await instance[method](`/products/${prId}`, { product });
       dispatch(getProduct());
       return data;
     } catch (error) {
@@ -41,17 +41,30 @@ export const getProduct = createAsyncThunk("product/getProduct", async () => {
   }
 });
 
+export const searchProduct = createAsyncThunk(
+  "produtx/searchProduct",
+  async (searchValue) => {
+    try {
+      const { data } = await instance.get(`/products?name=${searchValue}`);
+      return data;
+    } catch (error) {
+      // console.log(error);
+    }
+  }
+);
+
 const productSlice = createSlice({
   name: "product",
   initialState: {
     load: false,
     productData: [],
     getProductData: [],
+    searchData: [],
     error: null,
   },
   reducers: {
-    update: (state) => {
-      console.log(state.productData);
+    clearsearch: (state) => {
+      state.searchData = []
     },
   },
   extraReducers: (builder) => {
@@ -71,9 +84,20 @@ const productSlice = createSlice({
     });
     builder.addCase(getProduct.fulfilled, (state, action) => {
       state.load = false;
-      state.getProductData = action.payload?.products;
+      state.getProductData = action.payload.products;
     });
     builder.addCase(getProduct.rejected, (state) => {
+      state.load = false;
+      state.error = "error get products";
+    });
+    builder.addCase(searchProduct.pending, (state) => {
+      state.load = true;
+    });
+    builder.addCase(searchProduct.fulfilled, (state, action) => {
+      state.load = false;
+      state.searchData = action.payload.products;
+    });
+    builder.addCase(searchProduct.rejected, (state) => {
       state.load = false;
       state.error = "error get products";
     });
@@ -81,4 +105,4 @@ const productSlice = createSlice({
 });
 
 export const productReducer = productSlice.reducer;
-export const { update } = productSlice.actions;
+export const {clearsearch} = productSlice.actions;
