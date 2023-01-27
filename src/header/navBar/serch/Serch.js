@@ -35,11 +35,13 @@ export const Serch = () => {
         placeholder="search"
       />
       {search.map((item) => {
-        return (
-          <div key={item._id} className="search">
-            <h2>{item.name}</h2>
-          </div>
-        );
+        if (item.name.match(searchValue)) {
+          return (
+            <div key={item._id} className="search">
+              <h2>{item.name}</h2>
+            </div>
+          );
+        }
       })}
     </div>
   );

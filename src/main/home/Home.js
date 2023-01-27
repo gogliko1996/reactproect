@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Addproduct } from "../../aplicationtools/Addproduct";
 import {
   deleteProduct,
   fetchProduct,
   getProduct,
-  update,
 } from "../../redux/product";
 import { admin, useUserInfo } from "../../redux/Users";
 import FileBase from "react-file-base64";
 import "./home.css"
+import { Categoris } from "../categories/Categoris";
 
 export const Home = () => {
   const product = useSelector((state) => state.products.getProductData);
@@ -123,6 +122,7 @@ export const Home = () => {
           </div>
         )}
       </>
+      <Categoris/>
       <div className="productBox">
       {product.map((item) => {
         return (
