@@ -5,7 +5,7 @@ import FileBase from "react-file-base64";
 import { useNavigate } from "react-router-dom";
 
 export const Addproduct = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [productValue, setProductValue] = useState({
     name: "",
@@ -13,7 +13,7 @@ export const Addproduct = () => {
     brand: "",
     description: "",
     price: "",
-    Image: "",
+    image: "",
   });
 
   const onchange = (e) => {
@@ -23,10 +23,10 @@ export const Addproduct = () => {
 
   const submit = (e) => {
     e.preventDefault();
-    dispatch(fetchProduct({productValue, update: false }))
-    .unwrap()
-    .then(() => navigate("/home"))
-    
+    dispatch(fetchProduct({ productValue, update: false }))
+      .unwrap()
+      .then(() => navigate("/home"));
+
     const product = { ...productValue };
     product.name = "";
     product.category = "";
@@ -76,7 +76,7 @@ export const Addproduct = () => {
         mulfiple={false}
         onDone={({ base64 }) => {
           const img = { ...productValue };
-          img.Image = base64;
+          img.image = base64;
           setProductValue(img);
         }}
       />

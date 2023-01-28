@@ -12,7 +12,7 @@ export const CategoriProducts = () => {
   const {
     value: page,
     changePage,
-    sortValue:sort,
+    sortValue: sort,
     changeSort,
   } = useQveriparams("page", "sort");
 
@@ -29,7 +29,7 @@ export const CategoriProducts = () => {
     dispatch(
       categoriesProduct(`${categoriName}?page=${page}&size=1&sort=${sort}`)
     );
-  }, [categoriName,page,sort]);
+  }, [categoriName, page, sort]);
 
   return (
     <div>
@@ -43,7 +43,7 @@ export const CategoriProducts = () => {
         return (
           <div className="product" key={item._id}>
             <div className="imge" name={item._id}>
-              {" "}
+              <img className="img" src={item.image} alt={item.name} />{" "}
             </div>
             <div className="">
               <h2>{item.name}</h2>

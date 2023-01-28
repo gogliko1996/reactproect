@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteProduct,
-  fetchProduct,
-  getProduct,
-} from "../../redux/product";
+import { deleteProduct, fetchProduct, getProduct } from "../../redux/product";
 import { admin, useUserInfo } from "../../redux/Users";
 import FileBase from "react-file-base64";
-import "./home.css"
+import "./home.css";
 import { Categoris } from "../categories/Categoris";
 
 export const Home = () => {
   const product = useSelector((state) => state.products.getProductData);
-  const user = useSelector((state) => state.user.userData)
+  const user = useSelector((state) => state.user.userData);
   const dispatch = useDispatch();
   const userIfo = useUserInfo();
   const adminPanel = admin(userIfo);
@@ -28,7 +24,7 @@ export const Home = () => {
   });
 
   useEffect(() => {
-    dispatch(getProduct())
+    dispatch(getProduct());
   }, []);
 
   const onchange = (e) => {
@@ -40,13 +36,15 @@ export const Home = () => {
     const id = e.target.name;
     for (const item of product) {
       if (id === item._id) {
+        const img = { ...productValue };
+        img.Image = item.image;
+        setProductValue(img);
         setProductValue(item);
         setProductId(item._id);
         setupdate(true);
       }
     }
   };
-
   const submit = (e) => {
     e.preventDefault();
     dispatch(fetchProduct({ productValue, update: true, id: productId }));
@@ -123,33 +121,34 @@ export const Home = () => {
           </div>
         )}
       </>
-      <Categoris/>
+      <Categoris />
       <div className="productBox">
-      {product.map((item) => {
-        return (
-          <div className="product" key={item._id}>
-            <div className="imge" name={item._id}  > </div>
-            <div  className="">
-              <h2>{item.name}</h2>
-            <h3>{item.price}  $</h3>
-            </div>
-            {adminPanel && (
-              <div className="button">
-                <button name={item._id} onClick={onclickUpdate}>
-                  {" "}
-                  update{" "}
-                </button>
-                <button name={item._id} onClick={onclickDelete}>
-                  {" "}
-                  delete{" "}
-                </button>
+        {product.map((item) => {
+          return (
+            <div className="product" key={item._id}>
+              <div className="imge" name={item._id}>
+                <img className="img" src={item.image} alt={item.name} />
               </div>
-            )
-            }
-            {user?.role.includes("admin") ? "":<button> card </button> }
-          </div>
-        );
-      })}
+              <div className="">
+                <h2>{item.name}</h2>
+                <h3>{item.price} $</h3>
+              </div>
+              {adminPanel && (
+                <div className="button">
+                  <button name={item._id} onClick={onclickUpdate}>
+                    {" "}
+                    update{" "}
+                  </button>
+                  <button name={item._id} onClick={onclickDelete}>
+                    {" "}
+                    delete{" "}
+                  </button>
+                </div>
+              )}
+              {user?.role.includes("admin") ? "" : <button> card </button>}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
