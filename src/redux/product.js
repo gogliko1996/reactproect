@@ -70,6 +70,7 @@ const productSlice = createSlice({
     categoriesProductData: [],
     getProductData: [],
     searchData: [],
+    totalPage: +null,
     error: null,
   },
   reducers: {
@@ -117,6 +118,7 @@ const productSlice = createSlice({
     });
     builder.addCase(categoriesProduct.fulfilled, (state, action) => {
       state.load = false;
+      state.totalPage = action.payload.totalPages;
       state.categoriesProductData = action.payload.products;
     });
     builder.addCase(categoriesProduct.rejected, (state) => {

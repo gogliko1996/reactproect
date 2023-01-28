@@ -11,7 +11,7 @@ export const Categoris = () => {
         return (
           <div key={item._id}>
             <Link
-              to={`/products/categories/${item.name}?page=1&size=20&sort=name,asc`}
+              to={`/products/categories/${item.name}?page=1&sort=name,asc`}
             >
               {" "}
               {item.name}{" "}

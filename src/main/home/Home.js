@@ -12,6 +12,7 @@ import { Categoris } from "../categories/Categoris";
 
 export const Home = () => {
   const product = useSelector((state) => state.products.getProductData);
+  const user = useSelector((state) => state.user.userData)
   const dispatch = useDispatch();
   const userIfo = useUserInfo();
   const adminPanel = admin(userIfo);
@@ -132,7 +133,7 @@ export const Home = () => {
               <h2>{item.name}</h2>
             <h3>{item.price}  $</h3>
             </div>
-            {adminPanel ? (
+            {adminPanel && (
               <div className="button">
                 <button name={item._id} onClick={onclickUpdate}>
                   {" "}
@@ -143,9 +144,9 @@ export const Home = () => {
                   delete{" "}
                 </button>
               </div>
-            ) : (
-              <button> calata </button>
-            )}
+            )
+            }
+            {user?.role.includes("admin") ? "":<button> card </button> }
           </div>
         );
       })}

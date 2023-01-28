@@ -6,13 +6,16 @@ import { Provider } from "react-redux";
 import { persistor, store } from "./redux/store";
 import { BrowserRouter as Router } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
+import { StyledEngineProvider } from '@mui/material/styles';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Router>
     <Provider store={store}>
       <PersistGate persistor={persistor}>
+      <StyledEngineProvider injectFirst>
         <App />
+        </StyledEngineProvider>
       </PersistGate>
     </Provider>
   </Router>

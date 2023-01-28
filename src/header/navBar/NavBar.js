@@ -19,7 +19,7 @@ export const NavBar = () => {
   return (
     <>
     <Serch/>
-    <nav>
+    <nav >
       <h1> {name} {lastname}</h1>
       {!userInfo ? (
         <Link to="/login"> login </Link>
