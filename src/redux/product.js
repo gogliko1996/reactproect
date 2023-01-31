@@ -52,14 +52,34 @@ export const searchProduct = createAsyncThunk(
   }
 );
 
-export const categoriesProduct = createAsyncThunk("categores/categoriesProduct", async (url) => {
-  try {
-    const {data} = await instance.get(`/products/categories/${url}`)
-    return data
-  } catch (error) {
-    // console.log(error);
+export const categoriesProduct = createAsyncThunk(
+  "categores/categoriesProduct",
+  async (url) => {
+    try {
+      const { data } = await instance.get(`/products/categories/${url}`);
+      return data;
+    } catch (error) {
+      // console.log(error);
+    }
   }
-})
+);
+
+export const saveCart = createAsyncThunk(
+  "cart/savecart",
+  async ({ userId, cartProduct },{dispatch}) => {
+    try {
+      await instance.put(`/users/${userId}/cart`,{products: cartProduct });
+      dispatch(getCart(userId))
+    } catch (error) {}
+  }
+); 
+
+export const getCart = createAsyncThunk("cart/getCart", async (userId) => {
+  try {
+    const { data } = await instance.get(`/users/${userId}/cart`);
+    return data;
+  } catch (error) {}
+});
 
 const productSlice = createSlice({
   name: "product",
@@ -70,14 +90,39 @@ const productSlice = createSlice({
     categoriesProductData: [],
     getProductData: [],
     searchData: [],
+    getCartData: [],
+    cartAdd: [],
     totalPage: +null,
     error: null,
   },
   reducers: {
     clearsearch: (state) => {
-      state.searchData = []
+      state.searchData = [];
+    },
+    cartAdd: (state, action) => {
+      const product = action.payload;
+      const productId = product._id;
+  
+      const cartItem = state.cartAdd?.find(
+        (item) => item.product._id === productId
+      );
+
+      if (cartItem) {
+        const updateCart = state.cartAdd.map((item) =>
+          item.product._id === productId
+            ? {
+                ...cartItem,
+                quantity: cartItem.quantity + 1,
+              }
+            : cartItem
+        );
+        state.cartAdd = updateCart;
+      } else {
+        state.cartAdd.push({ product, quantity: 1 });
+      }
     },
   },
+
   extraReducers: (builder) => {
     builder.addCase(fetchProduct.pending, (state) => {
       state.load = true;
@@ -125,8 +170,19 @@ const productSlice = createSlice({
       state.load = false;
       state.error = "error get products";
     });
+    builder.addCase(getCart.pending, (state) => {
+      state.load = true;
+    });
+    builder.addCase(getCart.fulfilled, (state, action) => {
+      state.load = false;
+      state.getCartData = action.payload.cart;
+    });
+    builder.addCase(getCart.rejected, (state) => {
+      state.load = false;
+      state.error = "error get products";
+    });
   },
 });
 
 export const productReducer = productSlice.reducer;
-export const {clearsearch} = productSlice.actions;
+export const { clearsearch, cartAdd } = productSlice.actions;

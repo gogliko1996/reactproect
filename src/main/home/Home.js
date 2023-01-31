@@ -5,6 +5,10 @@ import { admin, useUserInfo } from "../../redux/Users";
 import FileBase from "react-file-base64";
 import "./home.css";
 import { Categoris } from "../categories/Categoris";
+import { AddCart } from "../../aplicationtools/AddCart";
+import { Cart } from "../Cart/Cart";
+import { Reiting } from "../../aplicationtools/Reiting";
+
 
 export const Home = () => {
   const product = useSelector((state) => state.products.getProductData);
@@ -131,8 +135,9 @@ export const Home = () => {
               </div>
               <div className="">
                 <h2>{item.name}</h2>
-                <h3>{item.price} $</h3>
+                <h3>{item.price} $</h3>    
               </div>
+              <Reiting productId={item._id} disable={!!userIfo}/>
               {adminPanel && (
                 <div className="button">
                   <button name={item._id} onClick={onclickUpdate}>
@@ -145,7 +150,7 @@ export const Home = () => {
                   </button>
                 </div>
               )}
-              {user?.role.includes("admin") ? "" : <button> card </button>}
+              {user?.role.includes("admin") ? "" : <AddCart id={item._id} />}
             </div>
           );
         })}

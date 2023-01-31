@@ -5,6 +5,7 @@ import { CategoriProducts } from "./main/categories/CategoriProducts";
 import { LoginForm } from "./header/navBar/login/Login";
 import { RegisterUsers } from "./header/navBar/register/Register";
 import { Home } from "./main/home/Home";
+import { Cart } from "./main/Cart/Cart";
 
  export const RouterComponent = () => {
    
@@ -12,6 +13,7 @@ import { Home } from "./main/home/Home";
         <>
         <Routes>
             <Route path="/login" element={<LoginForm/>}/>
+            <Route path="/cart"  element={<Cart/>}/>
             <Route path="/registration" element = {<RegisterUsers/>}/>
             <Route path="/home" element={<Home/>} />
             <Route path="/addproduqt" element={<Addproduct/>} />

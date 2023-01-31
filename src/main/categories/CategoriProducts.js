@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { Paginate } from "../../aplicationtools/Paginate";
 import { useQveriparams } from "../../hooks/useQveriparams";
 import { categoriesProduct } from "../../redux/product";
+import { AddCart } from "../../aplicationtools/AddCart";
 
 export const CategoriProducts = () => {
   const user = useSelector((state) => state.user.userData);
@@ -49,7 +50,7 @@ export const CategoriProducts = () => {
               <h2>{item.name}</h2>
               <h3>{item.price} $</h3>
             </div>
-            {user?.role.includes("admin") ? "" : <button> card </button>}
+            {user & user?.role.includes("admin") ? "" : <AddCart id={item._id} />}
           </div>
         );
       })}

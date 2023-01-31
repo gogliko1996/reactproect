@@ -1,12 +1,14 @@
-import React from "react";
+import { Select } from "@mui/material";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "./categories.css";
 
 export const Categoris = () => {
+  const [categoris] = useState("categoris")
   const categories = useSelector((state) => state.products.categoriesData);
   return (
-    <div className="categories">
+    <Select className='sort'value={categoris}  >
       {categories.map((item) => {
         return (
           <div key={item._id}>
@@ -19,6 +21,6 @@ export const Categoris = () => {
           </div>
         );
       })}
-    </div>
+    </Select>
   );
 };
